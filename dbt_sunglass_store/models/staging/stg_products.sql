@@ -18,9 +18,9 @@ SELECT
     eye_size AS eyeSize,
     LOWER(lens_color) AS lensColor,
     CAST(price AS DECIMAL(10, 2)) AS price,
-    LOWER(polarized_glasses) AS polarized,
-    LOWER(prescribed_glasses) AS prescribed,
-    lower(is_active) AS isActive,
+    polarized_glasses AS polarized,
+    prescribed_glasses AS prescribed,
+    LOWER(is_active) AS isActive,
     CAST(
         list_date AS DATE
     ) AS listDate,

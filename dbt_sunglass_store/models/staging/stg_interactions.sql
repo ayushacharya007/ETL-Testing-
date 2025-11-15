@@ -4,7 +4,7 @@ WITH interactions AS (
     FROM
         {{ source(
             'sunglass_store_raw',
-            'interaction'
+            'interactions'
         ) }}
 )
 SELECT

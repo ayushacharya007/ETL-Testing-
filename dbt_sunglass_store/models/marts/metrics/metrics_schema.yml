@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: age_distribution
+    description: This model calculates the distribution of ages in the customer dataset.
+    columns:
+      - name: ageGroup
+        description: Age group of the customer, categorized into ranges.
+      - name: userCount
+        description: The number of users in each age group.
+
+  - name: monthly_active_users
+    description: This model calculates the number of active users per month.
+    columns:
+      - name: monthYear
+        description: Year and month in YYYY-MM format
+      - name: userCount
+        description: The number of active users in the month
+
+  - name: monthly_sales
+    description: This model calculates the total sales amount per month.
+    columns:
+      - name: monthYear
+        description: Year and month in YYYY-MM format
+      - name: totalSales
+        description: The total sales amount for the month.
+
+  - name: total_revenue
+    description: This model calculates the total revenue generated from sales.
+    columns:
+      - name: totalRevenue
+        description: The total revenue amount.
+
+  - name: platform_sales
+    description: This model calculates the total sales amount by platform.
+    columns:
+      - name: platform
+        description: The platform through which the sales were made (e.g., web, mobile).
+      - name: totalSales
+        description: The total sales amount for the platform.

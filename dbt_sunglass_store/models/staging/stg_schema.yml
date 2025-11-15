@@ -1,0 +1,177 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: "Stage table for users data"
+    columns:
+      - name: id
+        description: "Unique identifier for each user"
+        tests:
+          - not_null
+          - unique
+      - name: fullName
+        description: "Full name of the user"
+        tests:
+          - not_null
+      - name: email
+        description: "Email address of the user"
+        tests:
+          - not_null
+          - unique
+      - name: age
+        description: "Age of the user"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['>=0']  # Ensures age is non-negative
+      - name: gender
+        description: "Gender of the user"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['male', 'female']
+      - name: postCode
+        description: "Postal code of the user's address"
+        tests:
+          - not_null
+      - name: country
+        description: "Country of the user"
+        tests:
+          - not_null
+      - name: joinDate
+        description: "Date when the user joined"
+        tests:
+          - not_null
+      - name: fromPlatform
+        description: "Platform from which the user joined"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['company website', 'social media', 'referral', 'other']
+
+  - name: stg_orders
+    description: "Stage table for orders data"
+    columns:
+      - name: id
+        description: "Unique identifier for each order"
+        tests:
+          - not_null
+          - unique
+      - name: userId
+        description: "Unique identifier for the user who placed the order"
+        tests:
+          - not_null
+      - name: itemId
+        description: "Unique identifier for the item ordered"
+        tests:
+          - not_null
+      - name: orderDate
+        description: "Date when the order was placed"
+        tests:
+          - not_null
+      - name: paymentType
+        description: "Type of payment used for the order"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['apple pay', 'google pay', 'credit card', 'debit card', 'paypal']
+  
+  - name: stg_products
+    description: "Stage table for products data"
+    columns:
+      - name: id
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+      - name: productName
+        description: "Name of the product"
+        tests:
+          - not_null
+      - name: brand
+        description: "Brand of the product"
+        tests:
+          - not_null
+      - name: price
+        description: "Price of the product"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['>=0']  # Ensures price is non-negative
+      - name: lensColor
+        description: "Color of the lens"
+        tests:
+          - not_null
+      - name: eyeSize
+        description: "Size of the eye wear"
+        tests:
+          - not_null
+      - name: polarized
+        description: "Indicates if the product has polarized glass (yes/no)"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['yes', 'no']
+      - name: prescribed
+        description: "Indicates if the product is prescribed glass (yes/no)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['yes', 'no']
+      - name: isActive
+        description: "Indicates if the product is currently active (true/false)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+      - name: listDate
+        description: "Date when the product was listed on the platform"
+        tests:
+          - not_null
+      - name: discontinuedDate
+        description: "Date when the product was discontinued, if applicable"
+  
+  - name: stg_interactions
+    description: "Stage table for user interactions data"
+    columns:
+      - name: id
+        description: "Unique identifier for each interaction"
+        tests:
+          - not_null
+          - unique
+      - name: userId
+        description: "Unique identifier for the user who interacted"
+        tests:
+          - not_null
+      - name: itemId
+        description: "Unique identifier for the item interacted with"
+        tests:
+          - not_null
+      - name: interactionTypeId
+        description: "Type of interaction (e.g., view, click, add to cart)"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['>=1', '<=4'] 
+      - name: interactionDate
+        description: "Date when the interaction occurred"
+        tests:
+          - not_null
+  
+  - name: stg_interaction_types
+    description: "Stage table for interaction types data"
+    columns:
+      - name: id
+        description: "Unique identifier for each interaction type"
+        tests:
+          - not_null
+          - unique  
+      - name: interactionType
+        description: "Name of the interaction type (e.g., view, click, add to cart)"
+        tests:
+          - not_null
+          - unique
+          - accepted_values: 
+              values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
+    
+  

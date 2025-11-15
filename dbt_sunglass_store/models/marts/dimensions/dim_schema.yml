@@ -1,0 +1,179 @@
+version: 2
+
+models:
+  - name: dim_users
+    description: "Dimension table for users data"
+    columns:
+      - name: id
+        description: "Unique identifier for each user"
+        tests:
+          - not_null
+          - unique
+      - name: fullName
+        description: "Full name of the user"
+        tests:
+          - not_null
+      - name: email
+        description: "Email address of the user"
+        tests:
+          - not_null
+          - unique
+      - name: age
+        description: "Age of the user"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures age is non-negative
+      - name: gender
+        description: "Gender of the user"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['male', 'female']
+      - name: postCode
+        description: "Postal code of the user's address"
+        tests:
+          - not_null
+      - name: country
+        description: "Country of the user"
+        tests:
+          - not_null
+      - name: joinDate
+        description: "Date when the user joined"
+        tests:
+          - not_null
+      - name: fromPlatform
+        description: "Platform from which the user joined"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['company website', 'social media', 'referral', 'other']
+    
+  - name: dim_products
+    description: "Dimension table for products data"
+    columns:
+      - name: id
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+      - name: productName
+        description: "Name of the product"
+        tests:
+          - not_null
+      - name: brand
+        description: "Brand of the product"
+        tests:
+          - not_null
+      - name: eyeSize
+        description: "Eye size of the product"
+        tests:
+          - not_null
+      - name: lensColor
+        description: "Color of the lens"
+        tests:
+          - not_null
+      - name: polarized
+        description: "Indicates if the product is polarized (yes/no)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['yes', 'no']
+      - name: prescribed
+        description: "Indicates if the product is prescribed (yes/no)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['yes', 'no']
+      - name: isActive
+        description: "Indicates if the product is active (true/false)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+      - name: price
+        description: "Price of the product"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures price is non-negative
+      - name: listDate
+        description: "Date when the product was listed"
+        tests:
+          - not_null
+      - name: discontinuedDate
+        description: "Date when the product was discontinued, if applicable"
+
+  - name: dim_dates
+    description: "Dimension table for dates data"
+    columns:
+      - name: dateActual
+        description: "Date in YYYY-MM-DD format"
+        tests:
+          - not_null
+          - unique
+      - name: year
+        description: "Year of the date"
+        tests:
+          - not_null
+      - name: quarter
+        description: "Quarter of the year (1-4)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=1', '<=4']  # Ensures quarter is between 1 and 4
+      - name: month
+        description: "Month of the date"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=1', '<=12']  # Ensures month is between 1 and 12
+      - name: day
+        description: "Day of the month"
+        tests:
+          - not_null
+      - name: weekdayName
+        description: "Name of the day (e.g., Monday, Tuesday)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+      - name: dayOfWeek
+        description: "Day of the week (0=Sunday, 6=Saturday)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0', '<=6']  # Ensures dayOfWeek is between 0 and 6
+      - name: dayType
+        description: "Indicates if the date is a weekend or a weekday"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['weekday', 'weekend']  # Ensures dayType is either weekday or weekend
+  
+  - name: dim_interactions
+    description: "Dimension table for user interactions data"
+    columns:
+      - name: id
+        description: "Unique identifier for each interaction"
+        tests:
+          - not_null
+          - unique
+      - name: userId
+        description: "Unique identifier for the user who interacted"
+        tests:
+          - not_null
+      - name: itemId
+        description: "Unique identifier for the item interacted with"
+        tests:
+          - not_null
+      - name: interactionType
+        description: "Type of interaction (e.g., view, click, add to cart)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
+      - name: interactionDate
+        description: "Date of the interaction"
+        tests:
+          - not_null

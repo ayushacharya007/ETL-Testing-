@@ -1,0 +1,135 @@
+version: 2
+
+models:
+  - name: fct_users_summary
+    description: "Fact table summarizing user interactions and purchases"
+    columns:
+      - name: userId
+        description: "Unique identifier for each user"
+        tests:
+          - not_null
+          - unique
+      - name: fullName
+        description: "Full name of the user"
+        tests:
+          - not_null
+      - name: totalOrders
+        description: "Total number of orders placed by the user"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - '>=0'  # Ensures total orders is non-negative
+      - name: totalInteractions
+        description: "Total number of interactions by the user"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - '>=0'  # Ensures total interactions is non-negative
+      - name: totalSpend
+        description: "Total amount spent by the user"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures total spend is non-negative
+      - name: firstPurchaseDate
+        description: "Date of the user's first purchase"
+        tests:
+          - not_null
+      - name: lastPurchaseDate
+        description: "Date of the user's last purchase"
+        tests:
+          - not_null
+      - name: daysToFirstPurchase
+        description: "Number of days from user join date to first purchase"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures days to first purchase is non-negative
+      - name: daysSinceLastPurchase
+        description: "Number of days since the user's last purchase"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures days since last purchase is non-negative
+      - name: firstInteractionDate
+        description: "Date of the user's first interaction"
+      - name: lastInteractionDate
+        description: "Date of the user's last interaction"
+      - name: stillActive
+        description: "Indicates if the user is still active (true/false)"
+        tests:
+          - not_null
+          - accepted_values: 
+              values: ['active', 'inactive']
+
+  - name: fct_products_summary
+    description: "Fact table summarizing product interactions and sales"
+    columns:
+      - name: itemId
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+      - name: productName
+        description: "Name of the product"
+        tests:
+          - not_null
+      - name: totalInteractions
+        description: "Total number of interactions with the product"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures total interactions is non-negative
+      - name: totalSold
+        description: "Total number of products sold"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures total sold is non-negative
+      - name: totalSales
+        description: "Total sales amount for the product"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures total sales is non-negative
+      - name: averagePurchasePerDay
+        description: "Average number of purchases per day for the product"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures average purchases per day is non-negative
+      - name: daysInMarket
+        description: "Number of days the product has been in the market"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures days in market is non-negative
+
+  - name: fct_orders
+    description: "Fact table for orders data"
+    columns:
+      - name: orderId
+        description: "Unique identifier for each order"
+        tests:
+          - not_null
+          - unique
+      - name: userId
+        description: "Unique identifier for the user who placed the order"
+        tests:
+          - not_null
+      - name: itemId
+        description: "Unique identifier for the item ordered"
+        tests:
+          - not_null
+      - name: orderDate
+        description: "Date when the order was placed"
+        tests:
+          - not_null
+      - name: sales
+        description: "Total sales amount for the order"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>=0']  # Ensures sales amount is non-negative

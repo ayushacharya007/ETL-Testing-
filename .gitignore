@@ -17,6 +17,9 @@ logs/
 *.log
 schema.drawio
 
+# Test files (may contain hardcoded URLs)
+etl_sunglass_store/test.py
+
 # dlt-specific sensitive files
 .dlt/
 *.duckdb

@@ -1,4 +1,4 @@
-version: 2.0
+version: 2
 
 sources:
   - name: sunglass_store_raw
@@ -69,7 +69,7 @@ sources:
           - name: payment_type
             description: "Type of payment used for the order (e.g., credit card, paypal, google pay)"
 
-      - name: interaction
+      - name: interactions
         description: "Table containing user interaction information"
         columns:
           - name: interaction_id

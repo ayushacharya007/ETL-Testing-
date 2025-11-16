@@ -23,13 +23,15 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['>=0']  # Ensures age is non-negative
+              arguments:
+                values: ['>=0'] # Ensures age is non-negative
       - name: gender
         description: "Gender of the user"
         tests:
           - not_null
           - accepted_values:
-              values: ['male', 'female']
+              arguments:
+                values: ['male', 'female']
       - name: postCode
         description: "Postal code of the user's address"
         tests:
@@ -47,8 +49,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['company website', 'social media', 'referral', 'other']
-    
+              arguments:
+                values: ['company website', 'social media', 'referral', 'other']
   - name: dim_products
     description: "Dimension table for products data"
     columns:
@@ -78,25 +80,29 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['yes', 'no']
+              arguments:
+                values: ['yes', 'no']
       - name: prescribed
         description: "Indicates if the product is prescribed (yes/no)"
         tests:
           - not_null
           - accepted_values:
-              values: ['yes', 'no']
+              arguments:
+                values: ['yes', 'no']
       - name: isActive
         description: "Indicates if the product is active (true/false)"
         tests:
           - not_null
           - accepted_values:
-              values: ['true', 'false']
+              arguments:
+                values: ['true', 'false']
       - name: price
         description: "Price of the product"
         tests:
           - not_null
           - accepted_values:
-              values: ['>=0']  # Ensures price is non-negative
+              arguments:
+                values: ['>=0'] # Ensures price is non-negative
       - name: listDate
         description: "Date when the product was listed"
         tests:
@@ -121,13 +127,15 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['>=1', '<=4']  # Ensures quarter is between 1 and 4
+              arguments:
+                values: ['>=1', '<=4'] # Ensures quarter is between 1 and 4
       - name: month
         description: "Month of the date"
         tests:
           - not_null
           - accepted_values:
-              values: ['>=1', '<=12']  # Ensures month is between 1 and 12
+              arguments:
+                values: ['>=1', '<=12'] # Ensures month is between 1 and 12
       - name: day
         description: "Day of the month"
         tests:
@@ -137,20 +145,22 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+              arguments:
+                values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
       - name: dayOfWeek
         description: "Day of the week (0=Sunday, 6=Saturday)"
         tests:
           - not_null
           - accepted_values:
-              values: ['>=0', '<=6']  # Ensures dayOfWeek is between 0 and 6
+              arguments:
+                values: ['>=0', '<=6'] # Ensures dayOfWeek is between 0 and 6
       - name: dayType
         description: "Indicates if the date is a weekend or a weekday"
         tests:
           - not_null
           - accepted_values:
-              values: ['weekday', 'weekend']  # Ensures dayType is either weekday or weekend
-  
+              arguments:
+                values: ['weekday', 'weekend'] # Ensures dayType is either weekday or weekend
   - name: dim_interactions
     description: "Dimension table for user interactions data"
     columns:
@@ -172,7 +182,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
+              arguments:
+                values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
       - name: interactionDate
         description: "Date of the interaction"
         tests:

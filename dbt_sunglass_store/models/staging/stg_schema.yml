@@ -22,14 +22,16 @@ models:
         description: "Age of the user"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['>=0']  # Ensures age is non-negative
+          - accepted_values:
+              arguments:
+                values: ['>=0'] # Ensures age is non-negative
       - name: gender
         description: "Gender of the user"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['male', 'female']
+          - accepted_values:
+              arguments:
+                values: ['male', 'female']
       - name: postCode
         description: "Postal code of the user's address"
         tests:
@@ -46,8 +48,9 @@ models:
         description: "Platform from which the user joined"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['company website', 'social media', 'referral', 'other']
+          - accepted_values:
+              arguments:
+                values: ['company website', 'social media', 'referral', 'other']
 
   - name: stg_orders
     description: "Stage table for orders data"
@@ -73,9 +76,9 @@ models:
         description: "Type of payment used for the order"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['apple pay', 'google pay', 'credit card', 'debit card', 'paypal']
-  
+          - accepted_values:
+              arguments:
+                values: ['apple pay', 'google pay', 'credit card', 'debit card', 'paypal']
   - name: stg_products
     description: "Stage table for products data"
     columns:
@@ -96,8 +99,9 @@ models:
         description: "Price of the product"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['>=0']  # Ensures price is non-negative
+          - accepted_values:
+              arguments:
+                values: ['>=0'] # Ensures price is non-negative
       - name: lensColor
         description: "Color of the lens"
         tests:
@@ -110,27 +114,29 @@ models:
         description: "Indicates if the product has polarized glass (yes/no)"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['yes', 'no']
+          - accepted_values:
+              arguments:
+                values: ['yes', 'no']
       - name: prescribed
         description: "Indicates if the product is prescribed glass (yes/no)"
         tests:
           - not_null
           - accepted_values:
-              values: ['yes', 'no']
+              arguments:
+                values: ['yes', 'no']
       - name: isActive
         description: "Indicates if the product is currently active (true/false)"
         tests:
           - not_null
           - accepted_values:
-              values: ['true', 'false']
+              arguments:
+                values: ['true', 'false']
       - name: listDate
         description: "Date when the product was listed on the platform"
         tests:
           - not_null
       - name: discontinuedDate
         description: "Date when the product was discontinued, if applicable"
-  
   - name: stg_interactions
     description: "Stage table for user interactions data"
     columns:
@@ -151,13 +157,14 @@ models:
         description: "Type of interaction (e.g., view, click, add to cart)"
         tests:
           - not_null
-          - accepted_values: 
-              values: ['>=1', '<=4'] 
+          - accepted_values:
+              arguments:
+                values: ['>=1', '<=4']
       - name: interactionDate
         description: "Date when the interaction occurred"
         tests:
           - not_null
-  
+
   - name: stg_interaction_types
     description: "Stage table for interaction types data"
     columns:
@@ -165,13 +172,12 @@ models:
         description: "Unique identifier for each interaction type"
         tests:
           - not_null
-          - unique  
+          - unique
       - name: interactionType
         description: "Name of the interaction type (e.g., view, click, add to cart)"
         tests:
           - not_null
           - unique
-          - accepted_values: 
-              values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
-    
-  
+          - accepted_values:
+              arguments:
+                values: ['viewed', 'added to favorites', 'added to cart', 'purchased']

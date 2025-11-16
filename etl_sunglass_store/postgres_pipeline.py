@@ -6,7 +6,7 @@ import os
 import sys
 import dlt
 from dlt.sources.filesystem import filesystem, read_parquet
-from typing import Optional
+from typing import Optional, List
 from models import Users, Products, Orders, Interactions, InteractionTypes
 from dotenv import load_dotenv
 
@@ -17,8 +17,8 @@ try:
     FILE_GLOB = os.environ["FILE_GLOB"]
     PIPELINE_NAME = os.environ["PIPELINE_NAME"]
     RAW_DATASET = os.environ["RAW_DATASET"]
-    DLT_DATASET = os.environ["DLT_DATASET"]
     DEV_DBT_DATASET = os.environ["DEV_DBT_DATASET"]
+    PRODUCTION_DBT_DATASET = os.environ["PRODUCTION_DBT_DATASET"]
     DESTINATION = os.environ["DESTINATION"]
 except KeyError as e:
     print(f"Error: Missing required environment variable {e}")
@@ -36,8 +36,8 @@ def create_source(
     path: str, 
     table_name: str, 
     write_disposition: dict | str, 
-    merge_key: Optional[str] = None, 
-    primary_key: Optional[str] = None,
+    merge_key: Optional[str | List[str]] = None, 
+    primary_key: Optional[str | List[str]] = None,
     incremental_column: Optional[str] = None,
 ):
     """
@@ -47,8 +47,8 @@ def create_source(
         path: S3 path to the data
         table_name: Target table name
         write_disposition: Write strategy (merge, append, etc.)
-        merge_key: Key for merge operations
-        primary_key: Key for merge operations
+        merge_key: Key(s) for merge operations (single value or list)
+        primary_key: Key(s) for merge operations (single value or list)
         incremental_column: Column for incremental loads
         columns: Column definitions with data types for type hints
     
@@ -85,33 +85,31 @@ def create_source(
 
 @dlt.resource(columns=Users, name="users")
 def get_users():
-    """Create users dimension source with SCD Type 2 strategy."""
+    """Create users dimension source with merge strategy."""
     yield from create_source(
         path=os.environ["USERS_PATH"],
         table_name="users",
-        # write_disposition={
-        #     "disposition": "merge",
-        #     "strategy": "scd2",
-        #     "validity_column_names": ["valid_from", "valid_to"]
-        # },
-        write_disposition="replace",
-        # merge_key="user_id"
+        write_disposition={
+            "disposition": "merge",
+            "strategy": "scd2",
+            "validity_column_names": ["valid_from", "valid_to"]
+            },
+        merge_key="user_id"
     )
 
 
 @dlt.resource(columns=Products, name="products")
 def get_products():
-    """Create products dimension source with SCD Type 2 strategy."""
+    """Create products dimension source with merge strategy."""
     yield from create_source(
         path=os.environ["PRODUCTS_PATH"],
         table_name="products",
-        # write_disposition={
-        #     "disposition": "merge",
-        #     "strategy": "scd2",
-        #     "validity_column_names": ["valid_from", "valid_to"]
-        # },
-        # merge_key="item_id",
-        write_disposition="replace",
+        write_disposition={
+            "disposition": "merge",
+            "strategy": "scd2",
+            "validity_column_names": ["valid_from", "valid_to"]
+            },
+        merge_key="item_id"
     )
 
 
@@ -121,7 +119,7 @@ def get_orders():
     yield from create_source(
         path=os.environ["ORDERS_PATH"],
         table_name="orders",
-        write_disposition="replace",
+        write_disposition="append",
         incremental_column="purchase_date"
     )
 
@@ -131,19 +129,19 @@ def get_interactions():
     """Create interactions fact source with incremental append strategy."""
     yield from create_source(
         path=os.environ["INTERACTIONS_PATH"],
-        table_name="interaction",
-        write_disposition="replace",
+        table_name="interactions",
+        write_disposition="append",
         incremental_column="interaction_date"
     )
 
 
 @dlt.resource(columns=InteractionTypes, name="interaction_types")
 def get_interaction_types():
-    """Create interaction types reference source with upsert strategy."""
+    """Create interaction types reference source with merge strategy."""
     yield from create_source(
         path=os.environ["INTERACTION_TYPES_PATH"],
         table_name="interaction_types",
-        write_disposition={"disposition": "merge", "strategy": "upsert"},
+        write_disposition="merge",
         primary_key="id"
     )
 

@@ -81,21 +81,21 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['yes', 'no']
+                values: ['True', 'False']
       - name: prescribed
         description: "Indicates if the product is prescribed (yes/no)"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['yes', 'no']
+                values: ['True', 'False']
       - name: isActive
         description: "Indicates if the product is active (true/false)"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['true', 'false']
+                values: ['active', 'inactive']
       - name: price
         description: "Price of the product"
         tests:
@@ -128,14 +128,14 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=1', '<=4'] # Ensures quarter is between 1 and 4
+                values: [">=1", "<=4"] # Ensures quarter is between 1 and 4
       - name: month
         description: "Month of the date"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=1', '<=12'] # Ensures month is between 1 and 12
+                values: [">=1", "<=12"] # Ensures month is between 1 and 12
       - name: day
         description: "Day of the month"
         tests:
@@ -153,7 +153,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0', '<=6'] # Ensures dayOfWeek is between 0 and 6
+                values: [">=0", "<=6"] # Ensures dayOfWeek is between 0 and 6
       - name: dayType
         description: "Indicates if the date is a weekend or a weekday"
         tests:
@@ -161,6 +161,7 @@ models:
           - accepted_values:
               arguments:
                 values: ['weekday', 'weekend'] # Ensures dayType is either weekday or weekend
+  
   - name: dim_interactions
     description: "Dimension table for user interactions data"
     columns:

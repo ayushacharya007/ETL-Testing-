@@ -34,11 +34,6 @@ def get_pipeline(pipeline_name=PIPELINE_NAME, destination=DESTINATION, dataset_n
 
 def create_source(
     path: str, 
-    table_name: str, 
-    write_disposition: dict | str, 
-    merge_key: Optional[str | List[str]] = None, 
-    primary_key: Optional[str | List[str]] = None,
-    incremental_column: Optional[str] = None,
 ):
     """
     Create a dlt source with specified configuration.
@@ -63,87 +58,56 @@ def create_source(
             | read_parquet()
         )
         
-        hints = {"table_name": table_name, "write_disposition": write_disposition}
-        
-        if merge_key:
-            hints["merge_key"] = merge_key
-        
-        if primary_key:
-            hints["primary_key"] = primary_key
-        
-        if incremental_column:
-            hints["incremental"] = dlt.sources.incremental(incremental_column)
-        
-        return source.apply_hints(**hints)
+        return source
     
     except KeyError as e:
         print(f"Error: Missing environment variable {e}")
         raise
     except Exception as e:
-        print(f"Error creating source for {table_name}: {str(e)}")
+        print(f"Error creating source: {str(e)}")
         raise
 
-@dlt.resource(columns=Users, name="users")
+@dlt.resource(table_name="users", 
+            columns=Users, 
+            write_disposition={
+                "disposition": "merge",
+                "strategy": "scd2",
+                "validity_column_names": ["valid_from", "valid_to"]
+                }, 
+            merge_key="user_id"
+)
 def get_users():
     """Create users dimension source with merge strategy."""
-    yield from create_source(
-        path=os.environ["USERS_PATH"],
-        table_name="users",
-        write_disposition={
-            "disposition": "merge",
-            "strategy": "scd2",
-            "validity_column_names": ["valid_from", "valid_to"]
-            },
-        merge_key="user_id"
-    )
+    yield from create_source(path=os.environ["USERS_PATH"])
 
 
-@dlt.resource(columns=Products, name="products")
+@dlt.resource(table_name="products",
+              columns=Products,
+              write_disposition={
+                  "disposition": "merge",
+                  "strategy": "scd2",
+                  "validity_column_names": ["valid_from", "valid_to"]
+                  },
+              merge_key="item_id")
 def get_products():
     """Create products dimension source with merge strategy."""
-    yield from create_source(
-        path=os.environ["PRODUCTS_PATH"],
-        table_name="products",
-        write_disposition={
-            "disposition": "merge",
-            "strategy": "scd2",
-            "validity_column_names": ["valid_from", "valid_to"]
-            },
-        merge_key="item_id"
-    )
+    yield from create_source(path=os.environ["PRODUCTS_PATH"])
 
-
-@dlt.resource(columns=Orders, name="orders")
+@dlt.resource(table_name="orders", columns=Orders, write_disposition="append", incremental=dlt.sources.incremental("purchase_date"))
 def get_orders():
     """Create orders fact source with incremental append strategy."""
-    yield from create_source(
-        path=os.environ["ORDERS_PATH"],
-        table_name="orders",
-        write_disposition="append",
-        incremental_column="purchase_date"
-    )
-
-
-@dlt.resource(columns=Interactions, name="interactions")
+    yield from create_source(path=os.environ["ORDERS_PATH"])
+    
+@dlt.resource(table_name="interactions", columns=Interactions, write_disposition="append",  incremental=dlt.sources.incremental("interaction_date"))
 def get_interactions():
     """Create interactions fact source with incremental append strategy."""
-    yield from create_source(
-        path=os.environ["INTERACTIONS_PATH"],
-        table_name="interactions",
-        write_disposition="append",
-        incremental_column="interaction_date"
-    )
+    yield from create_source(path=os.environ["INTERACTIONS_PATH"])
 
 
-@dlt.resource(columns=InteractionTypes, name="interaction_types")
+@dlt.resource(table_name="interaction_types", columns=InteractionTypes, write_disposition="merge", merge_key="id")
 def get_interaction_types():
     """Create interaction types reference source with merge strategy."""
-    yield from create_source(
-        path=os.environ["INTERACTION_TYPES_PATH"],
-        table_name="interaction_types",
-        write_disposition="merge",
-        primary_key="id"
-    )
+    yield from create_source(path=os.environ["INTERACTION_TYPES_PATH"])
 
 
 def extract_and_load():
@@ -196,7 +160,7 @@ def run_dbt_transformations():
         
         dbt = dlt.dbt.package(
             pipeline=dbt_pipeline,
-            package_location="../dbt_sunglass_store"
+            package_location="../dbt_sunglass_store" # can aslo be a git repo URL
         )
         
         print("🔄 Running dbt models...")

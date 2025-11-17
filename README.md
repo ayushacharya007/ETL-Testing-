@@ -4,13 +4,15 @@ A complete **Extract, Transform, Load (ETL)** data pipeline for a sunglass e-com
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Data Models](#data-models)
-- [Technologies](#technologies)
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Prerequisites](#-prerequisites)
+- [Data Models](#-data-models)
+- [Technologies](#-technologies)
+- [License](#-license)
+- [Author](#-author)
 
 ## 🎯 Overview
 

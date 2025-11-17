@@ -24,14 +24,14 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures age is non-negative
+                values: [">=0"] # Ensures age is non-negative
       - name: gender
         description: "Gender of the user"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['male', 'female']
+                values: ["male", "female"]
       - name: postCode
         description: "Postal code of the user's address"
         tests:
@@ -50,7 +50,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['company website', 'social media', 'referral', 'other']
+                values: ["company website", "social media", "referral", "other"]
 
   - name: stg_orders
     description: "Stage table for orders data"
@@ -64,10 +64,16 @@ models:
         description: "Unique identifier for the user who placed the order"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_users')
+              field: id
       - name: itemId
         description: "Unique identifier for the item ordered"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: id
       - name: orderDate
         description: "Date when the order was placed"
         tests:
@@ -78,7 +84,14 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['apple pay', 'google pay', 'credit card', 'debit card', 'paypal']
+                values:
+                  [
+                    "apple pay",
+                    "google pay",
+                    "credit card",
+                    "debit card",
+                    "paypal",
+                  ]
   - name: stg_products
     description: "Stage table for products data"
     columns:
@@ -101,7 +114,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures price is non-negative
+                values: [">=0"] # Ensures price is non-negative
       - name: lensColor
         description: "Color of the lens"
         tests:
@@ -116,21 +129,21 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['yes', 'no']
+                values: ["True", "False"]
       - name: prescribed
         description: "Indicates if the product is prescribed glass (yes/no)"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['yes', 'no']
+                values: ["True", "False"]
       - name: isActive
         description: "Indicates if the product is currently active (true/false)"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['true', 'false']
+                values: ["active", "inactive"]
       - name: listDate
         description: "Date when the product was listed on the platform"
         tests:
@@ -149,17 +162,26 @@ models:
         description: "Unique identifier for the user who interacted"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_users')
+              field: id
       - name: itemId
         description: "Unique identifier for the item interacted with"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: id
       - name: interactionTypeId
         description: "Type of interaction (e.g., view, click, add to cart)"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=1', '<=4']
+                values: [">=1", "<=4"]
+          - relationships:
+              to: ref('stg_interaction_types')
+              field: id
       - name: interactionDate
         description: "Date when the interaction occurred"
         tests:
@@ -180,4 +202,5 @@ models:
           - unique
           - accepted_values:
               arguments:
-                values: ['viewed', 'added to favorites', 'added to cart', 'purchased']
+                values:
+                  ["viewed", "added to favorites", "added to cart", "purchased"]

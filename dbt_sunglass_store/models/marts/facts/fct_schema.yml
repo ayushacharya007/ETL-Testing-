@@ -28,14 +28,14 @@ models:
           - accepted_values:
               arguments:
                 values:
-                  - '>=0' # Ensures total interactions is non-negative
+                  - [">=0"] # Ensures total interactions is non-negative
       - name: totalSpend
         description: "Total amount spent by the user"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures total spend is non-negative
+                values: [">=0"] # Ensures total spend is non-negative
       - name: firstPurchaseDate
         description: "Date of the user's first purchase"
         tests:
@@ -50,14 +50,14 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures days to first purchase is non-negative
+                values: [">=0"] # Ensures days to first purchase is non-negative
       - name: daysSinceLastPurchase
         description: "Number of days since the user's last purchase"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures days since last purchase is non-negative
+                values: [">=0"] # Ensures days since last purchase is non-negative
       - name: firstInteractionDate
         description: "Date of the user's first interaction"
       - name: lastInteractionDate
@@ -88,35 +88,35 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures total interactions is non-negative
+                values: [">=0"] # Ensures total interactions is non-negative
       - name: totalSold
         description: "Total number of products sold"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures total sold is non-negative
+                values: [">=0"] # Ensures total sold is non-negative
       - name: totalSales
         description: "Total sales amount for the product"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures total sales is non-negative
+                values: [">=0"] # Ensures total sales is non-negative
       - name: averagePurchasePerDay
         description: "Average number of purchases per day for the product"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures average purchases per day is non-negative
+                values: [">=0"] # Ensures average purchases per day is non-negative
       - name: daysInMarket
         description: "Number of days the product has been in the market"
         tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures days in market is non-negative
+                values: [">=0"] # Ensures days in market is non-negative
 
   - name: fct_orders
     description: "Fact table for orders data"
@@ -144,4 +144,4 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['>=0'] # Ensures sales amount is non-negative
+                values: [">=0"] # Ensures sales amount is non-negative
